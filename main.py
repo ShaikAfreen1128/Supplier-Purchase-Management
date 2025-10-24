@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from database import Base, engine
 from models import supplier_models 
-from app.routers import suppliers, purchase_orders, inventory
-
+from app.routers import suppliers,purchase_orders,inventory
 
 Base.metadata.create_all(bind=engine)
 

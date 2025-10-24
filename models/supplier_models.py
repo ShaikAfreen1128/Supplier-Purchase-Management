@@ -21,11 +21,12 @@ class PurchaseOrder(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     supplier_id = Column(Integer, ForeignKey("suppliers.id"))
-    status = Column(String, default="pending")
+    status = Column(String, default="pending")  
     created_at = Column(DateTime, default=lambda: datetime.now(IST))
 
     supplier = relationship("Supplier", back_populates="purchase_orders")
     items = relationship("PurchaseOrderItem", back_populates="order")
+
 
 class PurchaseOrderItem(Base):
     __tablename__ = "purchase_order_items"
@@ -35,9 +36,10 @@ class PurchaseOrderItem(Base):
     product_id = Column(Integer, nullable=False)
     quantity = Column(Integer, nullable=False)
     unit_cost = Column(Float, nullable=False)
+    received_quantity = Column(Integer, default=0)  
 
-    order = relationship("PurchaseOrder", back_populates="items") 
-    
+    order = relationship("PurchaseOrder", back_populates="items")
+
 class Inventory(Base):
     __tablename__ = "inventory"
 
@@ -45,4 +47,3 @@ class Inventory(Base):
     product_id = Column(Integer, nullable=False)
     quantity = Column(Integer, default=0)
     last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-

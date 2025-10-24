@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from database import get_db
 from schemas import supplier_schemas as schemas
@@ -13,3 +13,10 @@ def create_supplier(supplier: schemas.SupplierCreate, db: Session = Depends(get_
 @router.get("/", response_model=list[schemas.SupplierOut])
 def get_suppliers(db: Session = Depends(get_db)):
     return supplier_service.get_suppliers(db)
+
+@router.get("/{supplier_id}/summary")
+def get_supplier_order_summary(supplier_id: int, db: Session = Depends(get_db)):
+    try:
+        return supplier_service.get_supplier_order_summary(db, supplier_id)
+    except HTTPException as e:
+        raise e
